@@ -1,0 +1,9 @@
+{
+    "do_resize": true,
+    "do_normalize": true,
+    "size": {
+        "shortest_edge": 224
+    },
+    "resample": 2,
+    "_processor_class": "VideoMAEImageProcessor"
+}
