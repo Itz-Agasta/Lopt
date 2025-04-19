@@ -5,18 +5,18 @@ import io
 
 VIRTUS_TEST_DATASET = {
     "real": os.path.abspath(os.path.join(os.path.dirname(__file__),
-                                         '../../../models/image/Dataset/test/real'
+                                         '../Datasets/test/images/real'
                                          )),
     "fake": os.path.abspath(os.path.join(os.path.dirname(__file__),
-                                         '../../../models/image/Dataset/test/fake'
+                                         '../Datasets/test/images/fake'
                                          ))
 }
 SCARLET_TEST_DATASET = {
     "real": os.path.abspath(os.path.join(os.path.dirname(__file__),
-                                         '../../../models/video/Dataset/test/real'
+                                         '../Datasets/test/videos/real'
                                          )),
     "fake": os.path.abspath(os.path.join(os.path.dirname(__file__),
-                                         '../../../models/video/Dataset/test/fake'
+                                         '../Datasets/test/videos/fake'
                                          ))
 }
 
