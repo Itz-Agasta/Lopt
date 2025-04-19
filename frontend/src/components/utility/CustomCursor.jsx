@@ -1,5 +1,5 @@
 import React from "react";
-import useMousePosition from "../hooks/useMousePosition"; // Import the hook
+import useMousePosition from "../../hooks/useMousePosition"; // Import the hook
 
 function CustomCursor() {
   const { x, y } = useMousePosition();

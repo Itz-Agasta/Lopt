@@ -1,4 +1,4 @@
-import hack4bengal from "../assets/hack4b.png";
+import hack4bengal from "../../assets/hack4b.png";
 const Sticker = () => {
   return (
     <>

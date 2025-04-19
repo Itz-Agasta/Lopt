@@ -6,7 +6,7 @@ import { GlobalContextProvider } from "./hooks/GlobalContext.jsx";
 import { RouterProvider } from "react-router";
 
 import router from "./components/routes.jsx";
-import CustomCursor from "./components/CustomCursor.jsx";
+import CustomCursor from "./components/utility/CustomCursor.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>

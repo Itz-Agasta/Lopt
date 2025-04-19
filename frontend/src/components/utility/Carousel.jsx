@@ -1,13 +1,13 @@
 import { motion, useAnimation, useMotionValue } from "framer-motion";
 import { useState, useEffect, useRef } from "react";
-import image1 from "../assets/images/ScarlettJohansson.jpg";
-import image2 from "../assets/images/RishiSunak1.jpg";
-import image3 from "../assets/images/RashmikaMadanna.jpg";
-import image4 from "../assets/images/TaylorSwift.jpg";
-import image5 from "../assets/images/KristenBell.jpg";
-import image6 from "../assets/images/JohnnyDepp.jpg";
-import image7 from "../assets/images/MeganFox.jpg";
-import image8 from "../assets/images/KeanuReeves.jpg";
+import image1 from "../../assets/images/ScarlettJohansson.jpg";
+import image2 from "../../assets/images/RishiSunak1.jpg";
+import image3 from "../../assets/images/RashmikaMadanna.jpg";
+import image4 from "../../assets/images/TaylorSwift.jpg";
+import image5 from "../../assets/images/KristenBell.jpg";
+import image6 from "../../assets/images/JohnnyDepp.jpg";
+import image7 from "../../assets/images/MeganFox.jpg";
+import image8 from "../../assets/images/KeanuReeves.jpg";
 
 const slides = [
   {

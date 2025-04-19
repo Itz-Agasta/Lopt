@@ -1,9 +1,9 @@
 import { NavLink, useLocation } from "react-router";
-import cross from "../assets/cross.svg";
-import dot from "../assets/dot.svg";
-import github from "../assets/github.svg";
-import { useGlobalContext } from "../hooks/GlobalContext";
-import dot2 from "../assets/dot2.svg";
+import cross from "../../assets/cross.svg";
+import dot from "../../assets/dot.svg";
+import github from "../../assets/github.svg";
+import { useGlobalContext } from "../../hooks/GlobalContext";
+import dot2 from "../../assets/dot2.svg";
 import Hover from "./Hover";
 
 const MenuBar = () => {
@@ -48,8 +48,8 @@ const MenuBar = () => {
                   <button
                     className={
                       key == 4
-                        ? "text-5xl text-white inter-900 -mt-2"
-                        : "text-5xl text-white inter-900"
+                        ? "text-4xl text-white font-[mubold] -mt-2"
+                        : "text-4xl text-white font-[mubold]"
                     }
                     onClick={() => changeTab(item)}
                   >

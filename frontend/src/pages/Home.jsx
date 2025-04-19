@@ -1,16 +1,16 @@
 import { useGlobalContext } from "../hooks/GlobalContext";
-import NavBar from "../components/NavBar";
-import Footer from "../components/Footer";
-import Sticker from "../components/h4b";
+import NavBar from "../components/utility/NavBar";
+import Footer from "../components/utility/Footer";
+import Sticker from "../components/utility/h4b";
 import background from "../assets/bg.png";
 import dot from "../assets/dot3.svg";
 import copy from "../assets/copy.svg";
 import arrow from "../assets/arrow2.svg";
 import arrow2 from "../assets/arrow3.svg";
 import github from "../assets/github.svg";
-import { InfiniteCarousel } from "../components/Carousel";
+import { InfiniteCarousel } from "../components/utility/Carousel";
 import { NavLink, useLocation } from "react-router";
-import CombinedReveal from "../components/CombinedReveal";
+import CombinedReveal from "../components/utility/CombinedReveal";
 import { motion } from "framer-motion";
 
 function Home() {
@@ -72,11 +72,14 @@ function Home() {
               <NavLink to="/playground">
                 <button className="bg-[#1E1E1E] h-[3.4rem] w-[12rem] flex flex-row justify-between items-center space-x-4 rounded-xs rounded-br-2xl mt-2 px-1 group">
                   <div className="flex flex-row justify-center items-center space-x-2 min-w-full h-[90%] rounded-xs rounded-br-2xl after:transition-all after:duration-400 group-hover:bg-[#f03b05] transition-colors duration-500">
-                    <a href="/playground" class="relative inline-block w-[80%]">
-                      <span class="after:content-[''] after:absolute after:left-2 after:bottom-0 after:h-[0.08rem] after:w-0 after:bg-white after:transition-all after:duration-500 group-hover:after:w-[85%] text-sm text-white inter-400">
-                        Try Veritas Now!
+                    <span
+                      href="/playground"
+                      className="relative inline-block w-[80%]"
+                    >
+                      <span className="after:content-[''] after:absolute after:left-2 after:bottom-0 after:h-[0.08rem] after:w-0 after:bg-white after:transition-all after:duration-500 group-hover:after:w-[85%] text-sm text-white inter-400">
+                        Try Lopt Now!
                       </span>
-                    </a>
+                    </span>
                     <div className="bg-[#606060] h-[3rem] w-[3rem] flex flex-col justify-center items-center rounded-br-2xl ml-[0.4rem] group-hover:bg-[#cb3105] transition-colors duration-300">
                       <img
                         src={arrow}

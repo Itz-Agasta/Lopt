@@ -1,5 +1,5 @@
-import { useGlobalContext } from "../hooks/GlobalContext";
-import dot from "../assets/dot.svg";
+import { useGlobalContext } from "../../hooks/GlobalContext";
+import dot from "../../assets/dot.svg";
 import { useLocation } from "react-router";
 import { useEffect, useState } from "react";
 
@@ -38,7 +38,7 @@ const Footer = () => {
   }
 
   useEffect(() => {
-    let delay = list[index] === "Scroll Down___" ? 1000 : 300;
+    let delay = list[index] === "Scroll Down___" ? 1000 : 200;
 
     const timer = setTimeout(() => {
       setIndex((prevIndex) => (prevIndex + 1) % list.length);
