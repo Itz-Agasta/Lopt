@@ -46,3 +46,11 @@
 .gray{
   color: #a1a2a2;
 }
+
+body, * {
+  cursor: none;
+}
+
+.orange{
+  color: #f03b05;
+}
