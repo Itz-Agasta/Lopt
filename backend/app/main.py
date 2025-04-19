@@ -16,7 +16,10 @@ if allowed_origin:
 else:
     origins = [                 # --Development
         "http://localhost",
-        "http://localhost:5173"
+        "http://localhost:5173",
+        "3.111.30.241",
+        "172.31.7.225",
+        "ec2-3-111-30-241.ap-south-1.compute.amazonaws.com"
     ]
 
 app.add_middleware(
