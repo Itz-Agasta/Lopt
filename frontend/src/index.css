@@ -1,6 +1,21 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Special+Gothic+Expanded+One&display=swap');
 @import "tailwindcss";
 
+@font-face {
+  font-family: 'nmBold';
+  src: url("./assets/fonts/NeueMontreal-Bold.otf");
+}
+
+@font-face {
+  font-family: 'nmRegular';
+  src: url("./assets/fonts/NeueMontreal-Medium.otf");
+}
+
+@font-face {
+  font-family: 'nmMedium';
+  src: url("./assets/fonts/NeueMontreal-Regular.otf");
+}
+
 .goth {
   font-family: "Special Gothic Expanded One", sans-serif;
   font-weight: 400;
@@ -19,4 +34,15 @@
   font-optical-sizing: auto;
   font-weight: 400;
   font-style: normal;
+}
+
+.inter-600{
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-style: normal;
+}
+
+.gray{
+  color: #a1a2a2;
 }

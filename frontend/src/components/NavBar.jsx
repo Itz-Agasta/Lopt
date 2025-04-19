@@ -3,10 +3,13 @@ import menu from "../assets/list.svg";
 import { useEffect, useState } from "react";
 import MenuBar from "../components/MenuBar";
 import { useGlobalContext } from "../hooks/GlobalContext";
+import { useLocation } from "react-router";
 
 const NavBar = () => {
   const [time, setTime] = useState(new Date());
-  const { changeMenu } = useGlobalContext();
+  const { activeTab, changeMenu } = useGlobalContext();
+  const location = useLocation();
+  var path = location.pathname.slice(1);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -18,34 +21,39 @@ const NavBar = () => {
   return (
     <>
       <div className="absolute">
-        <div className="relative z-10 flex flex-row justify-between">
-          <img
-            src={logo}
-            className="fixed z-20 -top-10 -left-5"
-            height={450}
-            width={600}
-          ></img>
-          <div className="text-sm inter-400 mt-5 gap-10 text-white flex flex-row right-0 w-screen justify-end">
-            <ul>
+        <div className="relative z-10 flex flex-row justify-between w-[100vw]">
+          <div className="max-w-[30vw] ml-4 not-md:mt-3">
+            <h1
+              className={
+                path === "home"
+                  ? "md:text-9xl text-5xl font-[nmBold] text-white"
+                  : "md:text-5xl text-5xl font-[nmBold] text-white mt-3"
+              }
+            >
+              LOPT
+            </h1>
+          </div>
+          <div className="text-sm inter-400 mt-5 gap-10 text-white flex flex-row justify-center">
+            <ul className="not-md:hidden">
               + Where reality meets
               <br />
               AI integrity
             </ul>
-            <ul>
+            <ul className="not-md:hidden">
               + Le temps est
               <br />
               {time.toLocaleTimeString()}
             </ul>
-            <button
-              className="bg-[#1E1E1E] text-white inter-400 text-sm py-2 px-3 rounded-md mr-5 min-h-[40px] min-w-[70px] flex flex-row justify-center items-center hover:bg-red-500"
-              onClick={changeMenu}
-            >
-              <img src={menu} className="mr-1"></img>MENU
-            </button>
           </div>
+          <button
+            className="min-w-24 mt-5 max-h-[34px] bg-[#1E1E1E] text-white inter-400 text-sm py-2 px-3 rounded-md mr-5 flex flex-row justify-center items-center hover:bg-red-500"
+            onClick={changeMenu}
+          >
+            <img src={menu} className="mr-1"></img>MENU
+          </button>
         </div>
-        <MenuBar />
       </div>
+      <MenuBar />
     </>
   );
 };
