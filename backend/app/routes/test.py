@@ -31,7 +31,7 @@ async def handel_testing(dataset: str, pos: int):
         return image
 
 
-@router.post("/try")
+@router.post("/")
 async def test(pos: int, type: str):
     """
     Analyzes an image or video in the test dataset based on pos and type.
