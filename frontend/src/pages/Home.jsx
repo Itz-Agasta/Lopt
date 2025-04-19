@@ -1,17 +1,28 @@
-import NavBar from "../components/NavBar"
+import NavBar from "../components/NavBar";
+import background from "../assets/bg.png";
+import { useGlobalContext } from "../hooks/GlobalContext";
+import hack4bengal from "../assets/hack4b.png";
+
 function Home() {
-  
+  const { isMenuOpen, changeMenu } = useGlobalContext();
+
   return (
     <>
       <NavBar />
-      <div class="relative h-screen w-screen bg-black"><div class="absolute bottom-[50%] left-0 right-0 top-0 bg-[linear-gradient(to_right,#4f4f4f7f_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f7f_1px,transparent_1px)] bg-[size:56px_56px]"></div>
-      <div className="absolute bottom-[40%] w-screen text-7xl text-center fira-sans-bold space-y-4"><h1 className="text-white">Your shield against</h1>
-        <h1 className="text-white"><span className="text-[#6868ae]">Digital Deception</span>&nbsp;Awaits</h1>
-        <h2 className="text-xl text-white mt-10 fira-sans-regular">Detect Deepfake videos in seconds</h2>
-        <button className="text-xs text-white fira-sans-regular rounded-[1.35rem] px-7 py-3 bg-[#6868ae]">Sign Up for Free</button></div>
-         </div>
+      <img className="absolute h-screen w-screen z-0" src={background}></img>
+      {isMenuOpen ? (
+        <div className="h-screen w-screen z-20 fixed inset-0 backdrop-brightness-75"></div>
+      ) : (
+        <></>
+      )}
+      <div className="fixed -left-0 top-[40%] h-[11rem] w-[3rem] bg-white flex flex-col">
+        <img src={hack4bengal} className="-rotate-90"></img>
+        <p className="[writing-mode:vertical-rl] rotate-180 text-center text-xl inter-400 ml-2">
+          hack4bengal
+        </p>
+      </div>
     </>
-  )
+  );
 }
 
-export default Home
+export default Home;
