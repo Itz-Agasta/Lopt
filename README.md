@@ -19,7 +19,7 @@
 </div>
 
   <p align="center">
-    A modern, resource-efficient CLI music player that seamlessly integrates local music libraries with online streaming services. Experience high-quality audio playback, Spotify playlist synchronization, and an intuitive terminal interface designed for both developers and music enthusiasts.
+  Lopt is a multi-modal deepfake classification framework leveraging transformer-based architectures for high-confidence media authentication. It integrates ViT and TimeSformer models for  classifications, optimized via stratified training, augmentation, and parameter-efficient fine-tuning. Built for real-world robustness, Lopt supports scalable inference through a FastAPI backend and offers a React-powered UI for streamlined interaction. 
     <br />
     <br />
     <a href="https://www.youtube.com/watch?v=E1AjSHxe5NU&feature=youtu.be">View Demo</a>
