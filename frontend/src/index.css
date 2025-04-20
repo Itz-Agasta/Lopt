@@ -11,9 +11,6 @@
   src: url("./assets/fonts/MonumentExtended-Ultrabold.otf");
 }
 
-body, * {
-  cursor: none;
-}
 
 .goth {
   font-family: "Special Gothic Expanded One", sans-serif;

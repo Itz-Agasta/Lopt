@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export default async function analyzeFile(file){
+export async function analyzeFile(file){
     const formData = new FormData();
     formData.append('file', file);
 
@@ -14,3 +14,16 @@ export default async function analyzeFile(file){
     
     return response.data;
 }
+
+export async function try_sample(idx, type){
+
+    const API_URL = import.meta.env.VITE_BACKEND_API;
+    
+    const response = await axios.post(`${API_URL}/playground/try`, {
+        pos: idx,
+        type: type
+    });
+    
+    return response.data;
+}
+

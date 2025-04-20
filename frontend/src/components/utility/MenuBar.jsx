@@ -17,7 +17,7 @@ const MenuBar = () => {
 
   return isMenuOpen ? (
     <>
-      <div className="absolute z-30 bg-black h-[100vh] w-[40vw] -top-1 -right-0 border-[0.08rem] border-l-[#1E1E1E] flex justify-between flex-col not-md:hidden">
+      <div className="fixed z-200 bg-black h-[100vh] w-[40vw] -top-1 -right-0 border-[0.08rem] border-l-[#1E1E1E] flex justify-between flex-col not-md:hidden">
         <nav className="relative mt-7 ml-5 flex flex-row justify-between">
           <div className="flex flex-row items-center gap-x-2">
             <img src={dot} height={7} width={7}></img>

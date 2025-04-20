@@ -12,6 +12,8 @@ import { InfiniteCarousel } from "../components/utility/Carousel";
 import { NavLink, useLocation } from "react-router";
 import CombinedReveal from "../components/utility/CombinedReveal";
 import { motion } from "framer-motion";
+import Details from "../components/utility/Details";
+import Header from "../components/utility/Header";
 
 function Home() {
   const { isMenuOpen, changeMenu } = useGlobalContext();
@@ -20,20 +22,21 @@ function Home() {
     <>
       <NavBar />
       <img className="absolute h-screen w-screen z-0" src={background}></img>
+      <Header />
       {isMenuOpen ? (
         <div className="h-screen w-screen z-20 fixed inset-0 backdrop-brightness-75"></div>
       ) : (
         <></>
       )}
       <Sticker />
-      <div className="fixed z-20 md:left-5 md:top-[70%] right-5 bottom-[15%] flex flex-col md:w-[2vw]">
+      <div className="absolute z-20 md:left-5 md:top-[70%] right-5 bottom-[15%] flex flex-col md:w-[2vw]">
         <button className="bg-[#1E1E1E] p-1">
           <a href="https://github.com/Itz-Agasta/Lopt.git">
             <img src={github} height={10} width={20} />
           </a>
         </button>
       </div>
-      <div className="fixed -right-0 top-[15%] w-[100%] md:w-[50vw] justify-between flex flex-row border-l-[0.09rem] border-[#1e1e1e]">
+      <div className="absolute -right-5 top-[15%] w-[100%] md:w-[50vw] justify-between flex flex-row border-l-[0.09rem] border-[#1e1e1e]">
         <div>
           <CombinedReveal>
             <InfiniteCarousel />
@@ -102,6 +105,7 @@ function Home() {
         </div>
       </div>
       <Footer />
+      <Details />
     </>
   );
 }

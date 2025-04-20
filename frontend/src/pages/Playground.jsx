@@ -1,20 +1,33 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useGlobalContext } from "../hooks/GlobalContext";
 import NavBar from "../components/utility/NavBar";
 import Footer from "../components/utility/Footer";
 import gif from "../assets/waiting.gif";
 import Sticker from "../components/utility/h4b";
-import analyzeFile from "../lib/api";
+import { analyzeFile, try_sample } from "../lib/api";
+import samples from "../components/static/samples";
+import open from "../assets/redirect.svg";
+import background from "../assets/bg.png";
+import Header from "../components/utility/Header";
 
 const Playground = () => {
   const { isMenuOpen } = useGlobalContext();
   const [uploadedFile, setUploadedFile] = useState(null);
   const [fileType, setFileType] = useState("image");
   const [result, setResult] = useState(null);
+  const hiddenFileInput = useRef(null);
+  const [position, setPosition] = useState(null);
+  const [type, setType] = useState(null);
+  const [fileName, setFileName] = useState(null);
+
+  const handleClick = (e) => {
+    hiddenFileInput.current.click();
+  };
 
   const handleFileUpload = async (e) => {
     const file = e.target.files[0];
     setUploadedFile(file);
+    setFileName(file.name);
     if (file.type.startsWith("image/")) setFileType("image");
     else if (file.type.startsWith("video/")) setFileType("video");
     setResult(null);
@@ -22,6 +35,18 @@ const Playground = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (position && type) {
+      try {
+        console.log(position);
+        console.log(type);
+        const response = await try_sample(position, type);
+        setResult(response);
+        console.log(result);
+      } catch (err) {
+        console.log("error!");
+      }
+      return;
+    }
     if (!uploadedFile) return;
     try {
       const response = await analyzeFile(uploadedFile);
@@ -32,10 +57,32 @@ const Playground = () => {
     }
   };
 
+  const handleImage = async (index) => {
+    setFileName(samples[index].name);
+    const name = samples[index].name.split("_");
+    console.log(name);
+    let idx = parseInt(name[2]) - 1;
+    console.log(idx);
+    setPosition(idx);
+    console.log(position);
+    if (name.includes("fake") && name.includes("video")) setType("video fake");
+    else if (name.includes("real") && name.includes("image"))
+      setType("image real");
+    else if (name.includes("fake") && name.includes("image"))
+      setType("image fake");
+    else if (name.includes("real") && name.includes("video"))
+      setType("video real");
+    console.log(fileType);
+  };
+
   return (
     <>
+      {/*
+      <div className="relative h-full w-full bg-slate-950">
+        <div className="absolute bottom-0 left-0 right-0 top-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:14px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]"></div>*/}
       <div className="h-[100vh] w-[100vw] bg-black">
         <NavBar />
+        <Header />
         {isMenuOpen ? (
           <div className="h-screen w-screen z-20 fixed inset-0 backdrop-brightness-75"></div>
         ) : (
@@ -57,16 +104,54 @@ const Playground = () => {
               Diffusion, DeepFaceLab and FaceSwap.
             </h3>
           </div>
-          <div className="min-w-[60vw] min-h-[35vh] mt-4 border-[0.08rem] border-white rounded-xl overflow-hidden flex flex-col justify-between">
+          <div className="min-w-[60vw] h-[30vh] md:min-h-[35vh] mt-4 border-[0.08rem] border-white rounded-xl overflow-hidden flex flex-col justify-between bg-black">
             <div className="w-full min-h-[1vw] bg-white"></div>
-            <div className="min-h-[20vh] flex flex-col justify-center items-center">
-              <p className="text-sm text-white inter-400">Try sample image:</p>
-              <input
-                type="file"
-                accept="image/*,video/*"
-                onChange={handleFileUpload}
-                className="max-h-[10vh] not-md:max-w-[40vw] not-md:text-xs px-4 py-2 border border-gray-300 rounded-md text-white"
-              />
+            <div className="min-h-[20vh] flex flex-row not-md:flex-col justify-center items-center">
+              <div>
+                <p className="text-sm text-white inter-400 text-center md:hidden">
+                  Please Upload a file to detect deepfake:
+                </p>
+                <p className="text-md text-white inter-400 text-center not-md:hidden">
+                  Try sample image:
+                </p>
+                <div className="grid grid-cols-3 text-sm text-white inter-400 space-x-3 space-y-2 not-md:hidden">
+                  {samples.map((item, idx) => (
+                    <ul key={idx}>
+                      <div className="w-[10vw] border-[0.08rem] rounded-xl border-white p-1 flex flex-row justify-center gap-2">
+                        <button
+                          onClick={() =>
+                            window.open(
+                              item.source,
+                              "_blank",
+                              "noopener, noreferrer"
+                            )
+                          }
+                        >
+                          <img src={open} height={20} width={20}></img>
+                        </button>
+                        <button onClick={() => handleImage(idx)}>
+                          {item.name}
+                        </button>
+                      </div>
+                    </ul>
+                  ))}
+                </div>
+              </div>
+              <div className="h-20 flex justify-end items-end">
+                <button
+                  onClick={handleClick}
+                  className="text-md text-white inter-400 border-[0.08rem] border-white rounded-2xl px-4 py-2 h-16"
+                >
+                  {!fileName ? <p>Upload File</p> : <p>{fileName}</p>}
+                </button>
+                <input
+                  type="file"
+                  accept="image/*,video/*"
+                  ref={hiddenFileInput}
+                  onChange={handleFileUpload}
+                  style={{ display: "none" }}
+                />
+              </div>
             </div>
             <div className="min-h-[5vh] bg-white flex items-center justify-between">
               <div className="flex flex-row space-x-3">
@@ -86,7 +171,7 @@ const Playground = () => {
                   WAITING FOR YOUR INPUT
                 </p>
               </div>
-              <div className="w-32 h-8 mr-5 bg-white rounded-2xl border-[0.08rem] border-black flex flex-row text-center justify-between items-center">
+              <div className="w-20 md:w-32 h-8 mr-1 md:mr-5 bg-white rounded-2xl border-[0.08rem] border-black flex flex-row text-center justify-between items-center">
                 {fileType === "image" ? (
                   <>
                     <div className=" bg-black w-[50%] h-full rounded-2xl text-center text-white text-xs flex justify-center items-center border-[0.08rem] border-black">
@@ -110,17 +195,14 @@ const Playground = () => {
           <div className="mt-5 flex flex-row justify-center items-center space-x-5">
             {result ? (
               <>
-                <div className="w-[15vw] h-[1vh] bg-white rounded-md overflow-hidden">
+                <div className="w-[15vw] h-[1vh] bg-white rounded-md overflow-hidden not-md:hidden">
                   <div
                     className={
                       result.label === "fake"
-                        ? `w-[${Math.floor(
-                            result.confidence
-                          )}%] h-[1vh] bg-[#f03b05] rounded-m`
-                        : `w-[${Math.floor(
-                            result.confidence
-                          )}%] h-[1vh] bg-green-500 rounded-m`
+                        ? `h-[1vh] bg-[#f03b05] rounded-m`
+                        : `h-[1vh] bg-green-500 rounded-m`
                     }
+                    style={{ width: `${result.confidence}%` }}
                   />
                 </div>
                 <span className="text-md inter-400 text-white">
@@ -159,6 +241,7 @@ const Playground = () => {
                 <button
                   className="text-md text-white inter-400 bg-[#f03b05] px-4 py-2 rounded-2xl"
                   onClick={handleSubmit}
+                  disabled={fileName ? false : true}
                 >
                   Check for DeepFake!
                 </button>
@@ -168,6 +251,7 @@ const Playground = () => {
         </div>
         <Footer />
       </div>
+      {/*</></div>*/}
     </>
   );
 };

@@ -11,7 +11,6 @@ import CustomCursor from "./components/utility/CustomCursor.jsx";
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <GlobalContextProvider>
-      <CustomCursor />
       <RouterProvider router={router}></RouterProvider>
     </GlobalContextProvider>
   </StrictMode>
