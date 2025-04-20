@@ -14,8 +14,23 @@ import CombinedReveal from "../components/utility/CombinedReveal";
 import { motion } from "framer-motion";
 import Details from "../components/utility/Details";
 import Header from "../components/utility/Header";
+import { useEffect } from "react";
+import Lenis from "lenis";
 
 function Home() {
+  {
+    /*}
+  useEffect(() => {
+    const lenis = new Lenis();
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+  }, []);
+  */
+  }
+
   const { isMenuOpen, changeMenu } = useGlobalContext();
 
   return (
