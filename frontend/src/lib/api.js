@@ -19,7 +19,7 @@ export async function try_sample(idx, type){
 
     const API_URL = import.meta.env.VITE_BACKEND_API;
     
-    const response = await axios.post(`${API_URL}/playground/try`, {
+    const response = await axios.post(`${API_URL}/playground/test`, {
         pos: idx,
         type: type
     });

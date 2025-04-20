@@ -31,6 +31,8 @@ const Playground = () => {
     if (file.type.startsWith("image/")) setFileType("image");
     else if (file.type.startsWith("video/")) setFileType("video");
     setResult(null);
+    setType(null);
+    setPosition(null);
   };
 
   const handleSubmit = async (e) => {
@@ -65,13 +67,19 @@ const Playground = () => {
     console.log(idx);
     setPosition(idx);
     console.log(position);
-    if (name.includes("fake") && name.includes("video")) setType("video fake");
-    else if (name.includes("real") && name.includes("image"))
+    if (name.includes("fake") && name.includes("video")) {
+      setType("video fake");
+      setType("video");
+    } else if (name.includes("real") && name.includes("image")) {
       setType("image real");
-    else if (name.includes("fake") && name.includes("image"))
+      setType("image");
+    } else if (name.includes("fake") && name.includes("image")) {
       setType("image fake");
-    else if (name.includes("real") && name.includes("video"))
+      setType("image");
+    } else if (name.includes("real") && name.includes("video")) {
       setType("video real");
+      setType("video");
+    }
     console.log(fileType);
   };
 
@@ -241,7 +249,6 @@ const Playground = () => {
                 <button
                   className="text-md text-white inter-400 bg-[#f03b05] px-4 py-2 rounded-2xl"
                   onClick={handleSubmit}
-                  disabled={fileName ? false : true}
                 >
                   Check for DeepFake!
                 </button>
