@@ -2,7 +2,7 @@ import obama from "../../assets/images/obama.jpg";
 
 const Details = () => {
   return (
-    <div className="absolute top-[100%] w-[100vw] h-[100vh] z-70 bg-black brightness-80">
+    <div className="absolute top-[100%] w-[100vw] h-[110vh] z-100 bg-black brightness-80">
       <div className="relative min-h-[30vh] w-screen flex flex-col bg-black">
         <div className="font-[mubold] text-5xl text-white w-[60vw] ml-10 mt-5">
           APPROXIMATELY 500,000 DEEPFAKES
@@ -37,9 +37,15 @@ const Details = () => {
               2018. It was created by actor and director Jordan Peele in
               collaboration with BuzzFeed and Monkeypaw Productions.
             </p>
-            <div className="border-t-[0.08rem] border-b-[0.08rem] border-[#232322] text-white text-xl flex flex-row justify-between p-5">
-              <span className="text-[#f03b05]">01.</span>
-              <p>Virtus</p>
+            <div className="w-[70%] mt-5">
+              <div className="border-t-[0.08rem] border-b-[0.08rem] border-[#232322] text-white text-xl flex flex-row justify-between p-5">
+                <span className="text-[#f03b05]">01.</span>
+                <p>Virtus</p>
+              </div>
+              <div className="border-t-[0.08rem] border-b-[0.08rem] border-[#232322] text-white text-xl flex flex-row justify-between p-5">
+                <span className="text-[#f03b05]">02.</span>
+                <p>Scarlett</p>
+              </div>
             </div>
           </div>
         </div>

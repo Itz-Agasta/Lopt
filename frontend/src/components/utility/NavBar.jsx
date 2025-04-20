@@ -27,7 +27,7 @@ const NavBar = () => {
 
   return (
     <>
-      <div className="fixed z-100">
+      <div className="fixed z-200">
         <div className="relative flex flex-row justify-between w-[100vw]">
           <div className="max-w-[30vw] ml-4 not-md:mt-3">
             <Reveal1>

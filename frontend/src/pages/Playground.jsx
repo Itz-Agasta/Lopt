@@ -9,6 +9,9 @@ import samples from "../components/static/samples";
 import open from "../assets/redirect.svg";
 import background from "../assets/bg.png";
 import Header from "../components/utility/Header";
+import warning from "../assets/warning.png";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 const Playground = () => {
   const { isMenuOpen } = useGlobalContext();
@@ -19,6 +22,7 @@ const Playground = () => {
   const [position, setPosition] = useState(null);
   const [type, setType] = useState(null);
   const [fileName, setFileName] = useState(null);
+  const [submitting, setSubmitting] = useState(false);
 
   const handleClick = (e) => {
     hiddenFileInput.current.click();
@@ -37,29 +41,29 @@ const Playground = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (position && type) {
-      try {
-        console.log(position);
-        console.log(type);
+    setSubmitting(true); // start loading
+    console.log("Submit Started!");
+
+    try {
+      if (position && type) {
+        console.log(position, type);
         const response = await try_sample(position, type);
         setResult(response);
-        console.log(result);
-      } catch (err) {
-        console.log("error!");
+        console.log(response);
+      } else if (uploadedFile) {
+        const response = await analyzeFile(uploadedFile);
+        setResult(response);
+        console.log(response);
       }
-      return;
-    }
-    if (!uploadedFile) return;
-    try {
-      const response = await analyzeFile(uploadedFile);
-      setResult(response);
-      console.log(response);
     } catch (err) {
       console.log("Error!");
+    } finally {
+      setSubmitting(false);
     }
   };
 
   const handleImage = async (index) => {
+    setResult(null);
     setFileName(samples[index].name);
     const name = samples[index].name.split("_");
     console.log(name);
@@ -242,18 +246,25 @@ const Playground = () => {
             ) : (
               <></>
             )}
-            {result ? (
-              <></>
+            {result || (position && type) ? null : submitting ? (
+              <div className="text-white text-md inter-400 flex items-center space-x-2">
+                <p>Analyzing your {fileType}</p>
+              </div>
             ) : (
-              <>
-                <button
-                  className="text-md text-white inter-400 bg-[#f03b05] px-4 py-2 rounded-2xl"
-                  onClick={handleSubmit}
-                >
-                  Check for DeepFake!
-                </button>
-              </>
+              <button
+                className="text-md text-white inter-400 bg-[#f03b05] px-4 py-2 rounded-2xl"
+                onClick={handleSubmit}
+              >
+                Check for DeepFake!
+              </button>
             )}
+          </div>
+          <div className="relative w-screen flex justify-center items-center mt-3 gap-2">
+            <img src={warning} height={24} width={24}></img>
+            <p className="text-sm text-white">
+              We are currently facing issues in our samples route. Please upload
+              an image from your local machine for seamless experience.
+            </p>
           </div>
         </div>
         <Footer />

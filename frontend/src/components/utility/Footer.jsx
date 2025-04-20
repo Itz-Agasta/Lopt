@@ -47,24 +47,57 @@ const Footer = () => {
     return () => clearTimeout(timer); // cleanup
   }, [index]);
 
+  const [scroll, setScroll] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScroll(!scroll);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
     <div className="w-screen flex justify-center items-center">
-      <div className="fixed bottom-9 z-20 w-[95%] h-[1rem] border-[#1E1E1E] border-[0.08rem] border-b-0">
-        <div className="fixed bottom-9 z-21 w-[35vw] h-[1rem] border-[#1E1E1E] border-[0.08rem] border-b-0 border-l-0"></div>
-      </div>
-      <div className="fixed bottom-6 z-20 w-[100%] h-[1rem] flex flex-row justify-between items-center text-[#797979] text-xs inter-400">
-        <div className="md:ml-5 mt-3 flex flex-row">
-          <img src={dot} height={7} width={7}></img>
-          <p>/00{idx + 1}</p>
+      {scroll ? (
+        <div className="absolute bottom-9 z-20 w-[95%] h-[1rem] border-[#1E1E1E] border-[0.08rem] border-b-0">
+          <div className="absolute bottom-9 z-21 w-[35vw] h-[1rem] border-[#1E1E1E] border-[0.08rem] border-b-0 border-l-0"></div>
         </div>
-        <div className="w-[25vw] mt-3 flex flex-row space-x-2 not-md:absolute not-md:right-[40%]">
-          <img src={dot} height={7} width={7}></img>
-          <p>({menuItems[idx]})</p>
+      ) : (
+        <div className="fixed bottom-9 z-20 w-[95%] h-[1rem] border-[#1E1E1E] border-[0.08rem] border-b-0">
+          <div className="fixed bottom-9 z-21 w-[35vw] h-[1rem] border-[#1E1E1E] border-[0.08rem] border-b-0 border-l-0"></div>
         </div>
-        <div className="w-[10vw] text-right not-md:absolute not-md:right-0 not-md:w-[25vw]">
-          <p className="mt-3 text-white opacity-80">{list[index]}</p>
+      )}
+      {scroll ? (
+        <div className="absolute bottom-6 z-20 w-[100%] h-[1rem] flex flex-row justify-between items-center text-[#797979] text-xs inter-400">
+          <div className="md:ml-5 mt-3 flex flex-row">
+            <img src={dot} height={7} width={7}></img>
+            <p>/00{idx + 1}</p>
+          </div>
+          <div className="w-[25vw] mt-3 flex flex-row space-x-2 not-md:absolute not-md:right-[40%]">
+            <img src={dot} height={7} width={7}></img>
+            <p>({menuItems[idx]})</p>
+          </div>
+          <div className="w-[10vw] text-right not-md:absolute not-md:right-0 not-md:w-[25vw]">
+            <p className="mt-3 text-white opacity-80">{list[index]}</p>
+          </div>
         </div>
-      </div>
+      ) : (
+        <div className="fixed bottom-6 z-20 w-[100%] h-[1rem] flex flex-row justify-between items-center text-[#797979] text-xs inter-400">
+          <div className="md:ml-5 mt-3 flex flex-row">
+            <img src={dot} height={7} width={7}></img>
+            <p>/00{idx + 1}</p>
+          </div>
+          <div className="w-[25vw] mt-3 flex flex-row space-x-2 not-md:absolute not-md:right-[40%]">
+            <img src={dot} height={7} width={7}></img>
+            <p>({menuItems[idx]})</p>
+          </div>
+          <div className="w-[10vw] text-right not-md:absolute not-md:right-0 not-md:w-[25vw]">
+            <p className="mt-3 text-white opacity-80">{list[index]}</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

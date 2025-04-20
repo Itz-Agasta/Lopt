@@ -4,7 +4,7 @@ export async function analyzeFile(file){
     const formData = new FormData();
     formData.append('file', file);
 
-    const API_URL = import.meta.env.VITE_BACKEND_API;
+    const API_URL = "https://api-lopt-540193079740.us-central1.run.app"
     //console.log(API_URL);
     const response = await axios.post(`${API_URL}/playground/`, formData, {
         headers: {
