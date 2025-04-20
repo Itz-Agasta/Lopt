@@ -13,9 +13,10 @@ const wait = (time) => {
 
 const Home = lazy(() => wait(2000).then(() => import("../pages/Home")));
 const Playground = lazy(() =>
-  wait(1000).then(() => import("../pages/Playground"))
+  wait(2000).then(() => import("../pages/Playground"))
 );
-const Models = lazy(() => wait(1000).then(() => import("../pages/Models")));
+const About = lazy(() => wait(2000).then(() => import("../pages/About")));
+const Contact = lazy(() => wait(2000).then(() => import("../pages/Contact")));
 
 const router = createBrowserRouter([
   {
@@ -49,11 +50,21 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/models",
+    path: "/about",
     element: (
       <Suspense fallback={LoadingScreen("LOADING LOPT___")}>
         <ReactLenis root>
-          <Models />
+          <About />
+        </ReactLenis>
+      </Suspense>
+    ),
+  },
+  {
+    path: "/contact",
+    element: (
+      <Suspense fallback={LoadingScreen("LOADING LOPT___")}>
+        <ReactLenis root>
+          <Contact />
         </ReactLenis>
       </Suspense>
     ),

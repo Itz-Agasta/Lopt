@@ -13,7 +13,7 @@ const MenuBar = () => {
   path = path.slice(1);
   if (path.length == 0) path = "home";
 
-  const menuItems = ["HOME", "MODELS", "PLAYGROUND", "ABOUT", "CONTACT"];
+  const menuItems = ["HOME", "PLAYGROUND", "ABOUT", "CONTACT"];
 
   return isMenuOpen ? (
     <>
@@ -32,7 +32,7 @@ const MenuBar = () => {
           </button>
         </nav>
         <div className="relative h-[92vh] w-[39.5vw] flex justify-center items-center">
-          <div className="border-[0.08rem] border-[#1E1E1E] rounded-md flex flex-col justify-end h-[70%] w-[90%] gap-y-10 px-5">
+          <div className="border-[0.08rem] border-[#1E1E1E] rounded-md flex flex-col justify-center h-[70%] w-[90%] gap-y-10 px-5">
             {menuItems.map((item, key) => (
               <ul
                 className={
