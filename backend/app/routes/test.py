@@ -11,7 +11,7 @@ router = APIRouter()
 DATASET_DIR = Path("app/datasets")
 
 @router.get("/")
-async def try_prediction(filename: str = Query(..., description="Name of the image or video file to test.")):
+def try_prediction(filename: str = Query(..., description="Name of the image or video file to test.")):
     """
     Run prediction on a stored image or video from the datasets folder.
 
