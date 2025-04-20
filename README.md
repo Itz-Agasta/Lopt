@@ -30,13 +30,15 @@
     ·
     <a href="https://github.com/Itz-Agasta/lopt/pulls">Send a Pull Request</a>
   </p>
-</p>
 
 ## What Are Deepfakes — and Why Should You Care?
 
 Deepfakes are AI-generated media — often hyper-realistic videos or images — where a person’s face, voice, or identity is altered or replaced with another. Initially a byproduct of generative research (e.g., GANs and diffusion models), deepfakes have rapidly evolved from novelty to existential threat.
 
 > 📉 Implications: Misinformation, digital harassment, political manipulation, identity theft, and erosion of public trust.
+
+![image](https://github.com/user-attachments/assets/2f2e248e-d211-4d1d-818b-c3882f61eb78)
+*<p align="center">A screenshot comparing a real video of President Barrack Obama with a deepfaked version, Jul. 2019 (Youtube/UC Berkeley/https://youtu.be/51uHNgmnLWI/CC Reuse Allowed)</p>*
 
 As synthetic content becomes increasingly indistinguishable from authentic media, we need machine learning models that can see what humans no longer can.
 
@@ -73,6 +75,9 @@ This project implements two complementary models for deepfake detection:
 - `Results:` - Accuracy: 96% - Macro F1 Score: 0.958 - Evaluated using classification reports and confusion matrix
 - Inference Ready: Deployed to Hugging Face 🤗 [agasta/scarlet](https://huggingface.co/agasta/scarlet)
 
+![image](https://github.com/user-attachments/assets/a8ec502f-8ff3-4409-a0c3-c1a22ec2f774)
+*<p align="center">Comparative evaluation of deepfake detection performance across modern and legacy models.</p>*
+
 The framework is designed to be modular, allowing for easy integration of new models, datasets, evaluation metrics or with other projects.
 You can load the model into your project using:
 
@@ -95,7 +100,10 @@ via clean API boundaries.
 
 ### System Overview
 
-<image>
+![diagram-export-4-20-2025-5_07_55-AM](https://github.com/user-attachments/assets/86e074e3-8502-4866-8803-9580f4bd1ef8)
+
+*<p align="center">Fullstack System Architecture</p>*
+
 
 ### Request Lifecycle:
 
@@ -152,7 +160,7 @@ via clean API boundaries.
 | **Management** | UV, npm, pytest, Pydantic v2, Ruff                                                                       |
 | **DevOps**     | Docker, GitHub Actions, GCP, AWS                                                                         |
 
-## Reposerty Structure
+## Repository Structure
 
 ```bash
 lopt/
@@ -218,14 +226,14 @@ cd lopt
 1.  Install Frontend Dependencies:
 
 ```bash
-     cd frontend
-     npm install
+cd frontend
+npm install
 ```
 
 2.  Build the Frontend:
 
 ```bash
-  npm run build
+npm run build
 ```
 
 ### Step 3: Set Up the Backend
@@ -233,8 +241,8 @@ cd lopt
 1.  Install Python Dependencies:
 
 ```bash
-    cd backend
-    uv sync
+cd backend
+uv sync
 ```
 
 ### Step 4: Run the Application
@@ -242,13 +250,13 @@ cd lopt
 1.  Start the Backend:
 
 ```bash
-    uvicorn app.main:app --reload
+uv run fastapi dev
 ```
 
 2. Start the Frontend:
 
 ```bash
-    npm run dev
+npm run dev
 ```
 
 3. Access the application at http://localhost:3000.
@@ -261,7 +269,7 @@ cd lopt
 ## Contributors
 
 <a href="https://github.com/Itz-Agasta/lopt/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=Itz-Agasta/ethos" />
+  <img src="https://contrib.rocks/image?repo=Itz-Agasta/lopt" />
 </a>
 
 ## 📚 Citations
