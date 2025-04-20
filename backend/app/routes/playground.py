@@ -3,7 +3,7 @@ from fastapi.responses import JSONResponse
 from PIL import Image
 import tempfile
 from models.image_model import virtus
-# from models.video_model import scarlet  # FIXME: have to deploy the scarlet
+from models.video_model import scarlet
 
 router = APIRouter()
 
@@ -26,7 +26,7 @@ async def handle_video(file: UploadFile):
         with tempfile.NamedTemporaryFile(delete=False, suffix=".mp4") as tmp:
             tmp.write(await file.read())
             tmp_path = tmp.name
-        label, confidence = scarlet(tmp_path) # FIXME: have to  deploy the scarlet
+        label, confidence = scarlet(tmp_path)
 
         return JSONResponse({
             "type": "video",

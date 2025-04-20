@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 # from core.config import get_settings # Experimental
 from routes.playground import router as playground_router
+from routes.test import router as test_router
 from dotenv import load_dotenv
 import os
 
@@ -42,3 +43,4 @@ def root():
       }
 
 app.include_router(playground_router, prefix="/playground", tags=["playground"])
+app.include_router(test_router, prefix="/test", tags=["test"])
