@@ -2,18 +2,17 @@
 @import "tailwindcss";
 
 @font-face {
-  font-family: 'nmBold';
-  src: url("./assets/fonts/NeueMontreal-Bold.otf");
+  font-family: 'mreg';
+  src: url("./assets/fonts/MonumentExtended-Regular.otf");
 }
 
 @font-face {
-  font-family: 'nmRegular';
-  src: url("./assets/fonts/NeueMontreal-Medium.otf");
+  font-family: 'mubold';
+  src: url("./assets/fonts/MonumentExtended-Ultrabold.otf");
 }
 
-@font-face {
-  font-family: 'nmMedium';
-  src: url("./assets/fonts/NeueMontreal-Regular.otf");
+body, * {
+  cursor: none;
 }
 
 .goth {
@@ -45,4 +44,9 @@
 
 .gray{
   color: #a1a2a2;
+}
+
+
+.orange{
+  color: #f03b05;
 }
