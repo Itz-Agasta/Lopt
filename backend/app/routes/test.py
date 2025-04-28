@@ -1,58 +1,54 @@
-from fastapi import APIRouter, UploadFile
-from routes.playground import handle_image, handle_video
-import os
-import io
-
-VIRTUS_TEST_DATASET = {
-    "real": os.path.abspath(os.path.join(os.path.dirname(__file__),
-                                         '../Datasets/test/images/real'
-                                         )),
-    "fake": os.path.abspath(os.path.join(os.path.dirname(__file__),
-                                         '../Datasets/test/images/fake'
-                                         ))
-}
-SCARLET_TEST_DATASET = {
-    "real": os.path.abspath(os.path.join(os.path.dirname(__file__),
-                                         '../Datasets/test/videos/real'
-                                         )),
-    "fake": os.path.abspath(os.path.join(os.path.dirname(__file__),
-                                         '../Datasets/test/videos/fake'
-                                         ))
-}
+from fastapi import APIRouter, HTTPException
+from fastapi.responses import JSONResponse
+from pydantic import BaseModel
+from pathlib import Path
+from PIL import Image
+from models.image_model import virtus
+from models.video_model import scarlet
 
 router = APIRouter()
 
+DATASET_DIR = Path("app/datasets")
 
-async def handel_testing(dataset: str, pos: int, file_type: str):
-    """Loads the required file and returns an UploadFile object"""
-    extension = ".mp4" if file_type == "video" else ".jpg"  # Adjust the extension based on file type
-    file_path = f"{dataset}/00{pos}{extension}"
-    if not os.path.exists(file_path):
-        raise FileNotFoundError(f"File not found: {file_path}")
-    with open(file_path, "rb") as f:
-        content = io.BytesIO(f.read())
-        file = UploadFile(filename=f"test-{pos}{extension}", file=content)
-    return file
-
+class FileRequest(BaseModel):
+    filename: str
 
 @router.post("/")
-async def test(pos: int, type: str):
+def try_prediction(payload: FileRequest):
     """
-    Analyzes an image or video in the test dataset based on pos and type.
+    Run prediction on a stored image or video from the datasets folder.
 
-    - **pos**: int in the range 0-5
-    - **type**: either 'image real', 'image fake' or 'video real', 'video fake'
-    - Returns the type (image or video)[0], predicted label (real/fake)[1], and confidence score [2] as json response.
+    - Send JSON like { "filename": "fake_image_1.jpg" }
+    - It must exist under `app/datasets/`.
+    - Returns the predicted label (real/fake) and confidence.
     """
-    types = type.split(" ")
-    print(types)
-    if pos > 5:
-        raise ValueError(f"Value of pos can only be between 0 and 5")
-    if type not in ["video real", "image real", "image fake", "video fake"]:
-        raise ValueError(f"Value of type can only be 'image real', 'image fake' or 'video real', 'video fake' not {type}")
-    if types[0] == "image":
-        image = await handel_testing(VIRTUS_TEST_DATASET[types[1]], pos, "image")
-        return await handle_image(image)
-    elif types[0] == "video":
-        video = await handel_testing(SCARLET_TEST_DATASET[types[1]], pos, "video")
-        return await handle_video(video)
+    filename = payload.filename
+    file_path = DATASET_DIR / filename
+
+    if not file_path.exists():
+        raise HTTPException(status_code=404, detail=f"File '{filename}' not found in datasets.")
+
+    try:
+        ext = file_path.suffix.lower()
+        if ext in ".jpg":  # Dataset only contain .Jpg images.
+            image = Image.open(file_path).convert("RGB")
+            label, confidence = virtus(image)
+            return JSONResponse({
+                "type": "image",
+                "label": label,
+                "confidence": confidence
+            })
+
+        elif ext == ".mp4":   # Dataset only contain .mp4 videos.
+            label, confidence = scarlet(str(file_path))
+            return JSONResponse({
+                "type": "video",
+                "label": label,
+                "confidence": confidence
+            })
+
+        else:
+            raise HTTPException(status_code=400, detail="Unsupported file type.")
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error processing file: {e}")
