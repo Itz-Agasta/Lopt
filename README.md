@@ -1,9 +1,7 @@
+
+![image](https://github.com/user-attachments/assets/52c0785b-06b8-451f-af6a-0b6520fe13f7)
+
 **<h1 align="center">LOPT: Advanced Deepfake Classification Framework</h1>**
-
-<p align="center">
-  <img src="frontend/src/assets/logo.jpg" alt="Logo of lopt" width="300", height="300">
-</p>
-
 <div align="center">
 
 [![Python](https://img.shields.io/badge/Python-3.12%2B-blue)](https://www.python.org/)
@@ -26,7 +24,7 @@
   Lopt is a multi-modal deepfake classification framework leveraging transformer-based architectures for high-confidence media authentication. It integrates ViT and TimeSformer models for  classifications, optimized via stratified training, augmentation, and parameter-efficient fine-tuning. Built for real-world robustness, Lopt supports scalable inference through a FastAPI backend and offers a React-powered UI for streamlined interaction. 
     <br />
     <br />
-    <a href="https://www.youtube.com/watch?v=E1AjSHxe5NU&feature=youtu.be">View Demo</a>
+    <a href="https://youtu.be/9IbQkp3FVAs">View Demo</a>
     .
     <a href="https://github.com/Itz-Agasta/lopt/issues">Report Bug</a>
     ·
@@ -49,7 +47,7 @@ Deepfakes are AI-generated media — often hyper-realistic videos or images — 
 > 📉 Implications: Misinformation, digital harassment, political manipulation, identity theft, and erosion of public trust.
 
 ![image](https://github.com/user-attachments/assets/2f2e248e-d211-4d1d-818b-c3882f61eb78)
-_<p align="center">A screenshot comparing a real video of President Barrack Obama with a deepfaked version, Jul. 2019 (Youtube/UC Berkeley/https://youtu.be/51uHNgmnLWI/CC Reuse Allowed)</p>_
+*<p align="center">A screenshot comparing a real video of President Barrack Obama with a deepfaked version, Jul. 2019 [Youtube/UC Berkeley](/https://youtu.be/51uHNgmnLWI/CC)</p>*
 
 As synthetic content becomes increasingly indistinguishable from authentic media, we need machine learning models that can see what humans no longer can.
 
@@ -64,6 +62,12 @@ Lopt is a multimodal deepfake detection framework designed to analyze and classi
 - Clean and reproducible pipelines for training, evaluation, and deployment
 
 - Full-stack implementation for both research and real-world use
+
+
+https://github.com/user-attachments/assets/e41fa811-eb4d-478b-a12f-4e775d59b78b
+
+
+  
 
 ## Project Overview
 

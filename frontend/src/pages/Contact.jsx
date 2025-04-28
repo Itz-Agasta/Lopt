@@ -21,7 +21,7 @@ function Contact() {
             transition={{ duration: 0.8 }}
             className="bg-[#1e1e1e]/80 backdrop-blur-md p-8 rounded-2xl w-full max-w-3xl border border-[#2a2a2a]"
           >
-            <h2 className="text-white text-2xl md:text-4xl font-semibold mb-6">
+            <h2 className="text-white text-2xl md:text-4xl font-[muBold] mb-6">
               Contact Us
             </h2>
             <p className="text-[#c2c2c2] mb-6 text-sm md:text-md">

@@ -1,8 +1,14 @@
 "use client";
 
+import model1 from "../../assets/virtus.png";
+import model2 from "../../assets/scarlett.png";
+
 const LoadingScreen = ({ text = "LOADING LOPT..." }) => {
   return (
     <div className="fixed z-999 inset-0 flex flex-col items-center justify-center bg-black">
+      <div className="fixed top-10 left-10">
+        <img src={model1} height={100} width={100} />
+      </div>
       <style jsx>{`
         @keyframes grow {
           0%,
