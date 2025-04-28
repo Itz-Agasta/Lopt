@@ -33,6 +33,13 @@
     <a href="https://github.com/Itz-Agasta/lopt/pulls">Send a Pull Request</a>
   </p>
 
+> **⚠️ Archived Notice:**  
+> This project is now **archived** and is no longer actively maintained.  
+> The backend API has been turned off, so while the website is still accessible, the **Playground** section is no longer functional.
+>
+> However, if you want to try the API locally, the backend is published on **Docker Hub**.  
+> Follow the instructions in the `backend/` README to run it yourself.
+
 ## What Are Deepfakes — and Why Should You Care?
 
 Deepfakes are AI-generated media — often hyper-realistic videos or images — where a person’s face, voice, or identity is altered or replaced with another. Initially a byproduct of generative research (e.g., GANs and diffusion models), deepfakes have rapidly evolved from novelty to existential threat.
@@ -80,11 +87,14 @@ This project implements two complementary models for deepfake detection:
 
 - `Base Model:` [facebook/timesformer-base-finetuned-k400](https://huggingface.co/facebook/timesformer-base-finetuned-k400)
 - `Dataset:` [FaceForensics++](https://github.com/ondyari/FaceForensics)
-- `Results:` - Accuracy: 96% - Macro F1 Score: 0.958 - Evaluated using classification reports and confusion matrix
+- `Results:`
+  - Accuracy: 96%
+  - Macro F1 Score: 0.958
+  - Evaluated using classification reports and confusion matrix
 - Inference Ready: Deployed to Hugging Face 🤗 [agasta/scarlet](https://huggingface.co/agasta/scarlet)
 
 ![image](https://github.com/user-attachments/assets/a8ec502f-8ff3-4409-a0c3-c1a22ec2f774)
-*<p align="center">Comparative evaluation of deepfake detection performance across modern and legacy models.</p>*
+_<p align="center">Comparative evaluation of deepfake detection performance across modern and legacy models.</p>_
 
 The framework is designed to be modular, allowing for easy integration of new models, datasets, evaluation metrics or with other projects.
 You can load the model into your project using:
@@ -110,8 +120,7 @@ via clean API boundaries.
 
 ![diagram-export-4-20-2025-5_07_55-AM](https://github.com/user-attachments/assets/86e074e3-8502-4866-8803-9580f4bd1ef8)
 
-*<p align="center">Fullstack System Architecture</p>*
-
+_<p align="center">Fullstack System Architecture</p>_
 
 ### Request Lifecycle:
 
@@ -302,7 +311,7 @@ Lopt draws inspiration from key foundational papers in the deepfake detection sp
 
 ## License
 
-This project is licensed under the [MIT License](https://github.com/Itz-Agasta/lopt/blob/main/License). See the LICENSE file for more details.
+This project is licensed under the [MIT License](https://github.com/Itz-Agasta/lopt/blob/main/LICENSE). See the LICENSE file for more details.
 
 Feel free to Send a [Pull Request](https://github.com/Itz-Agasta/lopt/pulls) if you have improvements or fixes.
 For questions or feedback, please open an issue or contact [rupam.golui@proton.me](mailto:rupam.golui@proton.me)

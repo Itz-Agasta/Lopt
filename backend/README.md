@@ -52,7 +52,7 @@ backend/
 
 ---
 
-## Installation
+## Installation (Local)
 
 ```bash
 git clone https://github.com/Itz-Agasta/Lopt.git
@@ -67,7 +67,7 @@ cp .env.example .env
 
 ---
 
-## Running the API
+## Running the API (Local)
 
 ```bash
 uv run fastapi dev
@@ -76,6 +76,22 @@ uv run fastapi dev
 Then visit: [http://localhost:8000/docs](http://localhost:8000/docs)
 
 ---
+
+## Running with Docker
+
+You can also pull and run the backend API using Docker from Docker Hub:
+
+```bash
+docker pull agasta/lopt:latest
+docker run -d -p 8000:8000 agasta/lopt
+```
+
+After starting the container, the API will be available at:
+http://localhost:8000/docs
+
+> DockerHub Repository: https://hub.docker.com/repository/docker/agasta/lopt/
+
+Make sure to set any required environment variables if needed by using `-e flags` or mounting a `.env` file.
 
 ## 🔎 API Endpoints
 
