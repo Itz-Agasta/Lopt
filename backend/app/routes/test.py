@@ -1,5 +1,6 @@
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, HTTPException
 from fastapi.responses import JSONResponse
+from pydantic import BaseModel
 from pathlib import Path
 from PIL import Image
 from models.image_model import virtus
@@ -7,24 +8,29 @@ from models.video_model import scarlet
 
 router = APIRouter()
 
-
 DATASET_DIR = Path("app/datasets")
 
-@router.get("/")
-def try_prediction(filename: str = Query(..., description="Name of the image or video file to test.")):
+class FileRequest(BaseModel):
+    filename: str
+
+@router.post("/")
+def try_prediction(payload: FileRequest):
     """
     Run prediction on a stored image or video from the datasets folder.
 
-    - Send a filename like 'fake_image_1.jpg' or 'real_video_2.mp4'.
+    - Send JSON like { "filename": "fake_image_1.jpg" }
     - It must exist under `app/datasets/`.
     - Returns the predicted label (real/fake) and confidence.
     """
+    filename = payload.filename
     file_path = DATASET_DIR / filename
+
     if not file_path.exists():
         raise HTTPException(status_code=404, detail=f"File '{filename}' not found in datasets.")
 
     try:
-        if filename.lower().endswith(".jpg"):
+        ext = file_path.suffix.lower()
+        if ext in ".jpg":  # Dataset only contain .Jpg images.
             image = Image.open(file_path).convert("RGB")
             label, confidence = virtus(image)
             return JSONResponse({
@@ -33,7 +39,7 @@ def try_prediction(filename: str = Query(..., description="Name of the image or 
                 "confidence": confidence
             })
 
-        elif filename.lower().endswith(".mp4"):
+        elif ext == ".mp4":   # Dataset only contain .mp4 videos.
             label, confidence = scarlet(str(file_path))
             return JSONResponse({
                 "type": "video",
