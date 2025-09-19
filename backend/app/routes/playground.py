@@ -1,11 +1,16 @@
 from fastapi import APIRouter, UploadFile, File, HTTPException
 from fastapi.responses import JSONResponse
+from pydantic import BaseModel
 from PIL import Image
 import tempfile
+from pathlib import Path
 from models.image_model import virtus
 from models.video_model import scarlet
 
 router = APIRouter()
+
+# Dataset directory for sample files
+DATASET_DIR = Path("app/datasets")
 
 async def handle_image(file: UploadFile):
     """Process and analyze the uploaded image file."""
@@ -55,4 +60,33 @@ async def playground(file: UploadFile = File(...)):
 
     else:
         raise HTTPException(status_code=400, detail="Unsupported file type")
+
+
+@router.post("/test")
+async def test_sample(file: UploadFile = File(...)):
+    """
+    Test with sample files sent from frontend.
+    
+    - Accepts the actual sample file uploaded from frontend
+    - Analyzes it just like a regular file upload
+    - Returns the predicted label and confidence
+    """
+    try:
+        print(f"Received sample file: {file.filename}")
+        
+        filename = file.filename.lower()
+        
+        if filename.endswith((".jpg", ".jpeg", ".png", ".bmp", ".webp")):
+            print(f"Processing sample image: {file.filename}")
+            return await handle_image(file)
+            
+        elif filename.endswith((".mp4", ".mov", ".avi", ".webm", ".mkv")):
+            print(f"Processing sample video: {file.filename}")
+            return await handle_video(file)
+        else:
+            raise HTTPException(status_code=400, detail=f"Unsupported file type: {filename}")
+            
+    except Exception as e:
+        print(f"Error processing sample: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error processing sample: {str(e)}")
 

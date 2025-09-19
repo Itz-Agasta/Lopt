@@ -12,6 +12,15 @@ import Header from "../components/utility/Header";
 import warning from "../assets/warning.png";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card";
+import { Button } from "../components/ui/button";
+import { Input } from "../components/ui/input";
+import { Badge } from "../components/ui/badge";
+import { Progress } from "../components/ui/progress";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "../components/ui/collapsible";
+import AnalysisChainOfThought from "../components/utility/AnalysisChainOfThought";
+import { Upload, FileImage, FileVideo, AlertTriangle, CheckCircle, ChevronDown, Eye, EyeOff } from "lucide-react";
 
 const Playground = () => {
   const { isMenuOpen } = useGlobalContext();
@@ -23,6 +32,7 @@ const Playground = () => {
   const [type, setType] = useState(null);
   const [fileName, setFileName] = useState(null);
   const [submitting, setSubmitting] = useState(false);
+  const [showChainOfThought, setShowChainOfThought] = useState(true);
 
   const handleClick = (e) => {
     hiddenFileInput.current.click();
@@ -34,65 +44,95 @@ const Playground = () => {
     setFileName(file.name);
     if (file.type.startsWith("image/")) setFileType("image");
     else if (file.type.startsWith("video/")) setFileType("video");
+    // Reset previous results when new file is uploaded
     setResult(null);
     setType(null);
     setPosition(null);
   };
 
+  const handleSampleSelect = (value) => {
+    const index = parseInt(value);
+    handleImage(index);
+  };
+
+  const handleReset = () => {
+    setUploadedFile(null);
+    setFileName(null);
+    setResult(null);
+    setType(null);
+    setPosition(null);
+    setSubmitting(false);
+    setShowChainOfThought(true);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setSubmitting(true); // start loading
+    setSubmitting(true);
+    setResult(null); // Clear previous results
+    setShowChainOfThought(true); // Show chain of thought during analysis
     console.log("Submit Started!");
 
     try {
-      if (position && type) {
-        console.log(position, type);
+      if (position !== null && type) {
+        console.log("Using sample - Position:", position, "Type:", type);
         const response = await try_sample(position, type);
-        setResult(response);
+        // Add a small delay to show the complete analysis
+        setTimeout(() => {
+          setResult(response);
+          setShowChainOfThought(false); // Hide chain of thought after results
+        }, 6000); // Wait for chain of thought to complete
         console.log(response);
       } else if (uploadedFile) {
         const response = await analyzeFile(uploadedFile);
-        setResult(response);
+        // Add a small delay to show the complete analysis
+        setTimeout(() => {
+          setResult(response);
+          setShowChainOfThought(false); // Hide chain of thought after results
+        }, 6000); // Wait for chain of thought to complete
         console.log(response);
       }
     } catch (err) {
-      console.log("Error!");
+      console.log("Error!", err);
+      setResult(null);
+      setShowChainOfThought(false);
     } finally {
-      setSubmitting(false);
+      setTimeout(() => {
+        setSubmitting(false);
+      }, 6000); // Stop submitting after chain of thought completes
     }
   };
 
   const handleImage = async (index) => {
     setResult(null);
-    setFileName(samples[index].name);
-    const name = samples[index].name.split("_");
-    console.log(name);
-    let idx = parseInt(name[2]) - 1;
-    console.log(idx);
-    setPosition(idx);
-    console.log(position);
-    if (name.includes("fake") && name.includes("video")) {
-      setType("video fake");
-      setType("video");
-    } else if (name.includes("real") && name.includes("image")) {
-      setType("image real");
+    setShowChainOfThought(true);
+    const sample = samples[index];
+    setFileName(sample.name);
+    
+    // Parse the sample name to extract information
+    const name = sample.name.split("_");
+    console.log("Sample name parts:", name);
+    
+    // Extract index from name (fake_image_1 -> index 0, fake_image_2 -> index 1, etc.)
+    const sampleIndex = parseInt(name[2]) - 1;
+    setPosition(sampleIndex);
+    
+    // Determine file type and set it
+    if (name.includes("image")) {
+      setFileType("image");
       setType("image");
-    } else if (name.includes("fake") && name.includes("image")) {
-      setType("image fake");
-      setType("image");
-    } else if (name.includes("real") && name.includes("video")) {
-      setType("video real");
+    } else if (name.includes("video")) {
+      setFileType("video");
       setType("video");
     }
-    console.log(fileType);
+    
+    console.log("Position set to:", sampleIndex);
+    console.log("Type set to:", name.includes("image") ? "image" : "video");
+    console.log("File type set to:", name.includes("image") ? "image" : "video");
   };
 
   return (
     <>
-      {/*
-      <div className="relative h-full w-full bg-slate-950">
-        <div className="absolute bottom-0 left-0 right-0 top-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:14px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]"></div>*/}
-      <div className="h-[100vh] w-[100vw] bg-black">
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900">
         <NavBar />
         <Header />
         {isMenuOpen ? (
@@ -101,175 +141,257 @@ const Playground = () => {
           <></>
         )}
         <Sticker />
-        <div className="relative flex flex-col w-[100vw] h-[80vh] top-[10%] justify-center items-center">
-          <div className="text-white flex flex-col justify-center items-center max-w-[80vw] text-center space-y-5 inter-400">
-            <h1 className="text-3xl md:text-5xl">
-              Detect Deepfakes using Vision Transformers and GAN Classifiers
+        
+        <div className="container mx-auto px-4 py-8 pt-24">
+          {/* Hero Section */}
+          <div className="text-center mb-12">
+            <h1 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-white via-gray-300 to-gray-500 bg-clip-text text-transparent mb-4">
+              Detect Deepfakes with AI
             </h1>
-            <h2 className="text-xl md:text-3xl bg-gradient-to-b from-slate-600 to-neutral-50 bg-clip-text text-transparent">
-              [LOPT]
+            <h2 className="text-xl md:text-2xl text-gray-400 mb-4">
+              [LOPT] - Advanced Vision Analysis
             </h2>
-            <h3 className="text-sm md:text-md">
-              Drag and drop your file or click to browse. Virtus will analyze it
-              using our AI model and return a detailed report in seconds. Detect
-              AI-generated content from models like Midjourney, DALL-E, Stable
-              Diffusion, DeepFaceLab and FaceSwap.
-            </h3>
-          </div>
-          <div className="min-w-[60vw] h-[30vh] md:min-h-[35vh] mt-4 border-[0.08rem] border-white rounded-xl overflow-hidden flex flex-col justify-between bg-black">
-            <div className="w-full min-h-[1vw] bg-white"></div>
-            <div className="min-h-[20vh] flex flex-row not-md:flex-col justify-center items-center">
-              <div>
-                <p className="text-sm text-white inter-400 text-center md:hidden">
-                  Please Upload a file to detect deepfake:
-                </p>
-                <p className="text-md text-white inter-400 text-center not-md:hidden">
-                  Try sample image:
-                </p>
-                <div className="grid grid-cols-3 text-sm text-white inter-400 space-x-3 space-y-2 not-md:hidden">
-                  {samples.map((item, idx) => (
-                    <ul key={idx}>
-                      <div className="w-[10vw] border-[0.08rem] rounded-xl border-white p-1 flex flex-row justify-center gap-2">
-                        <button
-                          onClick={() =>
-                            window.open(
-                              item.source,
-                              "_blank",
-                              "noopener, noreferrer"
-                            )
-                          }
-                        >
-                          <img src={open} height={20} width={20}></img>
-                        </button>
-                        <button onClick={() => handleImage(idx)}>
-                          {item.name}
-                        </button>
-                      </div>
-                    </ul>
-                  ))}
-                </div>
-              </div>
-              <div className="h-20 flex justify-end items-end">
-                <button
-                  onClick={handleClick}
-                  className="text-md text-white inter-400 border-[0.08rem] border-white rounded-2xl px-4 py-2 h-16"
-                >
-                  {!fileName ? <p>Upload File</p> : <p>{fileName}</p>}
-                </button>
-                <input
-                  type="file"
-                  accept="image/*,video/*"
-                  ref={hiddenFileInput}
-                  onChange={handleFileUpload}
-                  style={{ display: "none" }}
-                />
-              </div>
-            </div>
-            <div className="min-h-[5vh] bg-white flex items-center justify-between">
-              <div className="flex flex-row space-x-3">
-                <img
-                  src={gif}
-                  height={14}
-                  width={20}
-                  className="ml-5 not-md:hidden"
-                ></img>
-                <img
-                  src={gif}
-                  height={12}
-                  width={15}
-                  className="ml-5 md:hidden"
-                ></img>
-                <p className="not-md:text-xs text-sm text-black inter-400">
-                  WAITING FOR YOUR INPUT
-                </p>
-              </div>
-              <div className="w-20 md:w-32 h-8 mr-1 md:mr-5 bg-white rounded-2xl border-[0.08rem] border-black flex flex-row text-center justify-between items-center">
-                {fileType === "image" ? (
-                  <>
-                    <div className=" bg-black w-[50%] h-full rounded-2xl text-center text-white text-xs flex justify-center items-center border-[0.08rem] border-black">
-                      Image
-                    </div>
-                    <div className="text-xs mr-4">Video</div>
-                  </>
-                ) : (
-                  <>
-                    <div className="text-xs ml-4 flex justify-center items-center">
-                      Image
-                    </div>
-                    <div className=" bg-black w-[50%] h-full rounded-2xl text-center text-white text-xs flex justify-center items-center border-[0.08rem] border-black">
-                      Video
-                    </div>
-                  </>
-                )}
-              </div>
-            </div>
-          </div>
-          <div className="mt-5 flex flex-row justify-center items-center space-x-5">
-            {result ? (
-              <>
-                <div className="w-[15vw] h-[1vh] bg-white rounded-md overflow-hidden not-md:hidden">
-                  <div
-                    className={
-                      result.label === "fake"
-                        ? `h-[1vh] bg-[#f03b05] rounded-m`
-                        : `h-[1vh] bg-green-500 rounded-m`
-                    }
-                    style={{ width: `${result.confidence}%` }}
-                  />
-                </div>
-                <span className="text-md inter-400 text-white">
-                  CONFIDENCE :
-                  <span
-                    className={
-                      result.label === "fake"
-                        ? "text-[#f03b05]"
-                        : "text-green-500"
-                    }
-                  >
-                    {" "}
-                    {result.confidence}%
-                  </span>
-                </span>
-                <span className="text-md inter-400 text-white">
-                  LIKELY{" "}
-                  <span
-                    className={
-                      result.label === "fake"
-                        ? "text-[#f03b05]"
-                        : "text-green-500"
-                    }
-                  >
-                    {result.label.toUpperCase()}
-                  </span>
-                </span>
-              </>
-            ) : (
-              <></>
-            )}
-            {result || (position && type) ? null : submitting ? (
-              <div className="text-white text-md inter-400 flex items-center space-x-2">
-                <p>Analyzing your {fileType}</p>
-              </div>
-            ) : (
-              <button
-                className="text-md text-white inter-400 bg-[#f03b05] px-4 py-2 rounded-2xl"
-                onClick={handleSubmit}
-              >
-                Check for DeepFake!
-              </button>
-            )}
-          </div>
-          <div className="relative w-screen flex justify-center items-center mt-3 gap-2">
-            <img src={warning} height={24} width={24}></img>
-            <p className="text-sm text-white">
-              We are currently facing issues in our samples route. Please upload
-              an image from your local machine for seamless experience.
+            <p className="text-gray-300 text-lg max-w-3xl mx-auto">
+              Upload your media files and let our advanced AI models analyze them for deepfake detection.
+              Using Vision Transformers and GAN classifiers for accurate results.
             </p>
           </div>
+
+          <div className="max-w-4xl mx-auto space-y-8">
+            {/* Upload Card */}
+            <Card className="bg-gray-800/50 border-gray-700 backdrop-blur-sm">
+              <CardHeader>
+                <CardTitle className="text-white flex items-center gap-2">
+                  <Upload className="w-5 h-5" />
+                  Upload Media for Analysis
+                </CardTitle>
+                <CardDescription className="text-gray-400">
+                  Select an image or video file to analyze for deepfake detection
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                {/* File Upload Area */}
+                <div 
+                  onClick={handleClick}
+                  className="border-2 border-dashed border-gray-600 rounded-lg p-8 hover:border-gray-500 transition-colors cursor-pointer bg-gray-800/30"
+                >
+                  <div className="text-center">
+                    {fileName ? (
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-center text-green-400">
+                          {fileType === 'image' ? <FileImage className="w-8 h-8" /> : <FileVideo className="w-8 h-8" />}
+                        </div>
+                        <p className="text-white font-medium">{fileName}</p>
+                        <p className="text-gray-400 text-sm">Click to change file</p>
+                      </div>
+                    ) : (
+                      <div className="space-y-2">
+                        <Upload className="w-12 h-12 text-gray-400 mx-auto" />
+                        <p className="text-white font-medium">Drop your file here or click to browse</p>
+                        <p className="text-gray-400 text-sm">Supports images and videos</p>
+                      </div>
+                    )}
+                  </div>
+                  <input
+                    type="file"
+                    accept="image/*,video/*"
+                    ref={hiddenFileInput}
+                    onChange={handleFileUpload}
+                    className="hidden"
+                  />
+                </div>
+
+                {/* File Type Toggle */}
+                <div className="flex justify-center">
+                  <div className="flex bg-gray-700 rounded-lg p-1">
+                    <Button
+                      variant={fileType === "image" ? "default" : "ghost"}
+                      size="sm"
+                      className={`${fileType === "image" ? "bg-white text-black" : "text-gray-300 hover:text-white"}`}
+                    >
+                      <FileImage className="w-4 h-4 mr-2" />
+                      Image
+                    </Button>
+                    <Button
+                      variant={fileType === "video" ? "default" : "ghost"}
+                      size="sm"
+                      className={`${fileType === "video" ? "bg-white text-black" : "text-gray-300 hover:text-white"}`}
+                    >
+                      <FileVideo className="w-4 h-4 mr-2" />
+                      Video
+                    </Button>
+                  </div>
+                </div>
+
+                {/* Sample Files Dropdown */}
+                <div className="space-y-4">
+                  <h3 className="text-white font-medium">Or try a sample file:</h3>
+                  <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center">
+                    <Select onValueChange={handleSampleSelect}>
+                      <SelectTrigger className="w-full sm:w-[300px] bg-gray-700/50 border-gray-600 text-white">
+                        <SelectValue placeholder="Choose a sample file..." />
+                      </SelectTrigger>
+                      <SelectContent className="bg-gray-800 border-gray-600">
+                        {samples.map((item, idx) => (
+                          <SelectItem 
+                            key={idx} 
+                            value={idx.toString()}
+                            className="text-gray-200 hover:bg-gray-700 focus:bg-gray-700"
+                          >
+                            <div className="flex items-center justify-between w-full">
+                              <span>{item.name}</span>
+                              <Badge 
+                                variant="outline" 
+                                className="ml-2 text-xs border-gray-500 text-gray-400"
+                              >
+                                {item.name.includes('image') ? 'IMG' : 'VID'}
+                              </Badge>
+                            </div>
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    
+                    {fileName && samples.some((_, idx) => idx.toString() === position?.toString()) && (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => {
+                          const sample = samples[position];
+                          window.open(sample.source, "_blank", "noopener, noreferrer");
+                        }}
+                        className="text-gray-400 hover:text-white flex items-center gap-2"
+                      >
+                        <img src={open} height={16} width={16} alt="Open" />
+                        View Source
+                      </Button>
+                    )}
+                  </div>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="flex justify-center gap-4">
+                  {!result && !submitting && (uploadedFile || (position !== null && type)) && (
+                    <Button 
+                      onClick={handleSubmit}
+                      className="bg-red-600 hover:bg-red-700 text-white px-8 py-3 text-lg"
+                    >
+                      Analyze for Deepfakes
+                    </Button>
+                  )}
+                  
+                  {(result || uploadedFile || fileName) && !submitting && (
+                    <Button 
+                      onClick={handleReset}
+                      variant="outline"
+                      className="border-gray-600 text-gray-300 hover:bg-gray-700 px-6 py-3"
+                    >
+                      Start Over
+                    </Button>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Analysis Process */}
+            {(submitting && showChainOfThought) && (
+              <AnalysisChainOfThought 
+                isAnalyzing={submitting} 
+                fileType={fileType} 
+                result={null}
+              />
+            )}
+
+            {/* Results Section */}
+            {result && (
+              <Card className="bg-gray-800/50 border-gray-700 backdrop-blur-sm">
+                <CardHeader>
+                  <CardTitle className="text-white flex items-center gap-2">
+                    {result.label === "fake" ? (
+                      <AlertTriangle className="w-5 h-5 text-red-500" />
+                    ) : (
+                      <CheckCircle className="w-5 h-5 text-green-500" />
+                    )}
+                    Detection Results
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-300">Classification:</span>
+                    <Badge 
+                      variant={result.label === "fake" ? "destructive" : "default"}
+                      className={`${result.label === "fake" ? "bg-red-600" : "bg-green-600"} text-white`}
+                    >
+                      {result.label.toUpperCase()}
+                    </Badge>
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="text-gray-300">Confidence:</span>
+                      <span className={`font-bold ${result.label === "fake" ? "text-red-400" : "text-green-400"}`}>
+                        {result.confidence}%
+                      </span>
+                    </div>
+                    <Progress 
+                      value={result.confidence} 
+                      className="h-3"
+                    />
+                  </div>
+                  
+                  <div className="mt-4 p-4 bg-gray-700/50 rounded-lg">
+                    <p className="text-gray-300 text-sm">
+                      {result.label === "fake" 
+                        ? "⚠️ This content appears to be artificially generated or manipulated. Exercise caution when sharing or trusting this media."
+                        : "✅ This content appears to be authentic with no signs of artificial generation or manipulation detected."
+                      }
+                    </p>
+                  </div>
+
+                  {/* Chain of Thought Toggle */}
+                  <div className="pt-4 border-t border-gray-600">
+                    <Collapsible open={showChainOfThought} onOpenChange={setShowChainOfThought}>
+                      <CollapsibleTrigger asChild>
+                        <Button 
+                          variant="ghost" 
+                          className="text-gray-300 hover:text-white p-0 h-auto font-normal"
+                        >
+                          <div className="flex items-center gap-2">
+                            {showChainOfThought ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                            {showChainOfThought ? "Hide" : "Show"} Analysis Process
+                            <ChevronDown className={`w-4 h-4 transition-transform ${showChainOfThought ? "rotate-180" : ""}`} />
+                          </div>
+                        </Button>
+                      </CollapsibleTrigger>
+                      <CollapsibleContent className="mt-4">
+                        <AnalysisChainOfThought 
+                          isAnalyzing={false} 
+                          fileType={fileType} 
+                          result={result}
+                        />
+                      </CollapsibleContent>
+                    </Collapsible>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Warning Notice */}
+            <Card className="bg-orange-900/20 border-orange-700/50">
+              <CardContent className="p-4">
+                <div className="flex items-center gap-3">
+                  <img src={warning} height={24} width={24} alt="Warning" />
+                  <p className="text-orange-200 text-sm">
+                    We are currently facing issues with our sample routes. Please upload files from your local machine for the best experience.
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         </div>
+        
         <Footer />
       </div>
-      {/*</></div>*/}
     </>
   );
 };

@@ -43,7 +43,7 @@ const slides = [
     name: "Keanue Reeves (Deepfake)",
   },
 ];
-const slideWidth = 270;
+const slideWidth = 320; // Increased from 270
 
 export function InfiniteCarousel() {
   const controls = useAnimation();
@@ -54,7 +54,7 @@ export function InfiniteCarousel() {
       while (!isAnimating.current) {
         await controls.start({
           x: -slides.length * slideWidth * 2,
-          transition: { duration: 85, repeat: Infinity, ease: "linear" },
+          transition: { duration: 90, repeat: Infinity, ease: "linear" },
         });
         controls.set({ x: 0 });
       }
@@ -77,26 +77,26 @@ export function InfiniteCarousel() {
         flexDirection: "row",
         flexShrink: 0,
       }}
-      className="space-x-2"
+      className="space-x-4"
     >
       <motion.div
         style={{ display: "flex" }}
         animate={controls}
-        className="space-x-3"
+        className="space-x-5"
       >
         {duplicatedSlides.map((slide, i) => (
-          <div key={i}>
-            <div className="w-[270px] h-[250px] border-[#1e1e1e] border-[0.1rem] flex justify-center items-center rounded-xl">
+          <div key={i} className="relative group">
+            <div className="w-[320px] h-[300px] border-[#2a2a2a] border-[0.15rem] flex justify-center items-center rounded-xl bg-gradient-to-b from-[#1a1a1a] to-[#0a0a0a] shadow-lg group-hover:shadow-xl transition-all duration-500">
               <img
                 src={slide.content}
                 alt={`Slide${i + 1}`}
-                className="rounded-[1rem] px-2 hover:scale-105 transition-all duration-500"
-                height={200}
-                width={200}
+                className="rounded-[1rem] px-3 hover:scale-105 transition-all duration-500 object-cover"
+                height={240}
+                width={240}
               />
             </div>
-            <div className="mt-5 -ml-4">
-              <p className="text-xs inter-400 gray">
+            <div className="mt-5 -ml-2">
+              <p className="text-sm inter-400 text-[#8a8a8a] group-hover:text-white transition-colors duration-300">
                 /00{i < 8 ? i + 1 : i - 8 + 1} {slide.name.toUpperCase()}
               </p>
             </div>
@@ -106,21 +106,21 @@ export function InfiniteCarousel() {
       <motion.div
         style={{ display: "flex" }}
         animate={controls}
-        className="space-x-3"
+        className="space-x-5"
       >
         {duplicatedSlides.map((slide, i) => (
-          <div key={i}>
-            <div className="w-[270px] h-[250px] border-[#1e1e1e] border-[0.1rem] flex justify-center items-center rounded-xl">
+          <div key={i} className="relative group">
+            <div className="w-[320px] h-[300px] border-[#2a2a2a] border-[0.15rem] flex justify-center items-center rounded-xl bg-gradient-to-b from-[#1a1a1a] to-[#0a0a0a] shadow-lg group-hover:shadow-xl transition-all duration-500">
               <img
                 src={slide.content}
                 alt={`Slide${i + 1}`}
-                className="rounded-[1rem] px-2 hover:scale-105 transition-all duration-500"
-                height={200}
-                width={200}
+                className="rounded-[1rem] px-3 hover:scale-105 transition-all duration-500 object-cover"
+                height={240}
+                width={240}
               />
             </div>
-            <div className="mt-5 -ml-4">
-              <p className="text-xs inter-400 gray">
+            <div className="mt-5 -ml-2">
+              <p className="text-sm inter-400 text-[#8a8a8a] group-hover:text-white transition-colors duration-300">
                 /00{i < 8 ? i + 1 : i - 8 + 1} {slide.name.toUpperCase()}
               </p>
             </div>
