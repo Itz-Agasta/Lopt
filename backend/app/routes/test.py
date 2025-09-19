@@ -30,7 +30,7 @@ def try_prediction(payload: FileRequest):
 
     try:
         ext = file_path.suffix.lower()
-        if ext in ".jpg":  # Dataset only contain .Jpg images.
+        if ext == ".jpg":  # Dataset only contain .jpg images.
             image = Image.open(file_path).convert("RGB")
             label, confidence = virtus(image)
             return JSONResponse({
