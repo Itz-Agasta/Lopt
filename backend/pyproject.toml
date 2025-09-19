@@ -8,11 +8,14 @@ dependencies = [
     "decord>=0.6.0",
     "dotenv>=0.9.9",
     "fastapi[standard]>=0.115.12",
+    "hf-xet>=1.1.10",
     "networkx==3.4.1",
     "pillow>=11.2.1",
+    "pip>=25.2",
     "pydantic>=2.11.3",
-    "torch>=2.6.0",
-    "torchvision>=0.21.0",
+    "safetensors>=0.5.3",
+    "torch>=2.7.0",
+    "torchvision>=0.22.0",
     "transformers>=4.51.3",
 ]
 
@@ -24,13 +27,12 @@ dev = [
 
 [tool.uv.sources]
 torch = [
-  { index = "pytorch-cpu", marker = "sys_platform != 'linux'" },
-  { index = "pytorch-cu124", marker = "sys_platform == 'linux'" },
+    { index = "pytorch-cpu" },
 ]
 torchvision = [
-  { index = "pytorch-cpu", marker = "sys_platform != 'linux'" },
-  { index = "pytorch-cu124", marker = "sys_platform == 'linux'" },
+    { index = "pytorch-cpu" },
 ]
+
 
 [[tool.uv.index]]
 name = "pytorch-cpu"

@@ -1,7 +1,7 @@
 from PIL import Image
 import torch
 from torchvision import transforms
-from transformers import AutoModelForImageClassification, AutoFeatureExtractor
+from transformers import AutoModelForImageClassification, AutoImageProcessor
 import torch.nn.functional as F
 
 
@@ -9,7 +9,7 @@ MODEL_PATH = "agasta/virtus"  # https://huggingface.co/agasta/virtus
 
 # Load model and preprocessing pipeline once & cache it to ~/.cache/huggingface/transformers
 model = AutoModelForImageClassification.from_pretrained(MODEL_PATH) # https://huggingface.co/docs/transformers/en/model_doc/auto
-extractor = AutoFeatureExtractor.from_pretrained(MODEL_PATH)
+image_processor = AutoImageProcessor.from_pretrained(MODEL_PATH)
 model.eval()
 
 def virtus(pil_image: Image.Image) -> tuple[str, float]:
@@ -20,7 +20,7 @@ def virtus(pil_image: Image.Image) -> tuple[str, float]:
         label (str): "fake" or "real"
         confidence (float): confidence score in percentage (0–100)
     """
-    inputs = extractor(images=pil_image, return_tensors="pt")
+    inputs = image_processor(images=pil_image, return_tensors="pt")
 
     with torch.no_grad():
         outputs = model(**inputs)

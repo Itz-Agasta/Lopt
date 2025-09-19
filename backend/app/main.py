@@ -10,29 +10,20 @@ load_dotenv()
 
 app = FastAPI()
 
-allowed_origin = os.getenv("FRONTEND_ORIGIN_URL")
-if allowed_origin:
-    origins =  allowed_origin   # --Production
-else:
-    origins = [                 # --Development
-        "http://localhost",
-        "http://localhost:5173"
-    ]
+# Get CORS origins from environment variables
+def get_cors_origins():
+    cors_origins = os.getenv("CORS_ORIGINS", "http://localhost:3000,http://localhost:5173")
+    if cors_origins == "*":
+        return ["*"]
+    return [origin.strip() for origin in cors_origins.split(",")]
 
-# TEMPORARY DEVELOPMENT CODE
-# origins = [
-#     "http://localhost",
-#     "http://localhost:5173"
-# ]  #
-
-# if allowed_origin:
-#     origins.append(allowed_origin) 
+origins = get_cors_origins()
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["*"],
 )
 

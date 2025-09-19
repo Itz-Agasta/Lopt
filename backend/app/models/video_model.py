@@ -4,13 +4,14 @@ import torch.nn.functional as F
 import torch
 import os
 
-CONFIG_PATH = os.path.abspath("app/models/config")
+# Get the directory of this file and construct path to config
+CONFIG_PATH = os.path.join(os.path.dirname(__file__), "config")
 MODEL_PATH = "agasta/scarlet" # Corrected path
 MAX_SIZE = 50
 
 # Load the model and video extraction pipeline
 model = AutoModelForVideoClassification.from_pretrained(MODEL_PATH)
-extractor = VideoMAEImageProcessor.from_pretrained(CONFIG_PATH)
+image_processor = VideoMAEImageProcessor.from_pretrained(CONFIG_PATH)
 model.eval()
 
 
@@ -20,8 +21,8 @@ def scarlet(video_path: str) -> tuple[str, float]:
 
         Description:
             Uses decord library to read the video file and extract 8 evenly spaced
-            frames form the video. The formed numpy list of the video frames are then
-            passed to the VideoMAEFeatureExtractor (from the VideoMAE-small model) to
+            frames from the video. The formed numpy list of the video frames are then
+            passed to the VideoMAEImageProcessor (from the VideoMAE-small model) to
             get inputs to scarlet.
 
 
@@ -37,10 +38,10 @@ def scarlet(video_path: str) -> tuple[str, float]:
     vr = VideoReader(video_path, ctx=cpu(0))  # Load video
     total_frames = len(vr)  # Total number of frames
     indices = [int(i * total_frames / num_frames) for i in range(num_frames)]  # Sample evenly spaced frames
-    frames = [vr[i].asnumpy() for i in indices] #make the final numpy array of frames
+    frames = [vr[i].asnumpy() for i in indices] # make the final numpy array of frames
 
-    #pass the video file to extractor to get inputs
-    inputs = extractor(images= frames, return_tensors="pt")
+    # pass the video file to image_processor to get inputs
+    inputs = image_processor(images=frames, return_tensors="pt")
 
     with torch.no_grad():
         results = model(**inputs)
