@@ -11,12 +11,13 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { NavLink } from "react-router";
 import model1 from "../../assets/virtus.png";
 import model2 from "../../assets/scarlett.png";
 import StatisticsShowcase from "./StatisticsShowcase";
 import { useState, useEffect } from "react";
+import DeepfakeCrisisSection from "./DeepfakeCrisisSection";
 
 const ScientificSections = () => {
   const [accuracyProgress, setAccuracyProgress] = useState(0);
@@ -64,50 +65,15 @@ const ScientificSections = () => {
       >
         <div className="max-w-7xl mx-auto px-4 space-y-16">
           
-          {/* Interactive Research Problem Section */}
-          <motion.section variants={itemVariants} className="text-center">
-            <HoverCard>
-              <HoverCardTrigger asChild>
-                <Badge variant="outline" className="mb-4 text-red-500 border-red-500 bg-red-500/10 cursor-pointer hover:bg-red-500/20 transition-colors">
-                  Critical Research Problem 🔍
-                </Badge>
-              </HoverCardTrigger>
-              <HoverCardContent className="w-80 bg-gray-900 border-gray-700">
-                <div className="space-y-2">
-                  <h4 className="text-sm font-semibold text-white">Research Impact</h4>
-                  <p className="text-sm text-gray-300">
-                    Our research contributes to the global effort in combating digital misinformation 
-                    through advanced AI detection methods.
-                  </p>
-                </div>
-              </HoverCardContent>
-            </HoverCard>
-            
-            <motion.h2 
-              className="text-4xl md:text-6xl font-bold text-white mb-6"
-              whileHover={{ scale: 1.02 }}
-              transition={{ type: "spring", stiffness: 300 }}
-            >
-              The Deepfake Crisis
-            </motion.h2>
-            
-            <p className="text-xl text-gray-300 max-w-4xl mx-auto leading-relaxed">
-              With over{" "}
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <span className="text-red-500 font-bold cursor-help">500,000</span>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Data from 2024 social media analysis</p>
-                </TooltipContent>
-              </Tooltip>
-              {" "}deepfakes circulating on social media in 2024, 
-              the need for accurate detection is more critical than ever.
-            </p>
-          </motion.section>
+
+          {/* The Deepfake Crisis - Reimagined */}
+          <DeepfakeCrisisSection />
 
           {/* Interactive Statistics Showcase */}
           <StatisticsShowcase />
+
+
+
 
           {/* Interactive Model Comparison */}
           <motion.section variants={itemVariants} className="px-4">
@@ -425,11 +391,11 @@ const ScientificSections = () => {
                 <Card className="bg-gray-900 border-gray-700 hover:border-red-500 transition-colors duration-300 h-full">
                   <CardHeader>
                     <CardTitle className="text-white flex items-center gap-2">
-                      🏗️ Architecture
+                      Architecture
                       <Tooltip>
                         <TooltipTrigger asChild>
                           <Button variant="ghost" size="sm" className="h-6 w-6 p-0">
-                            ❓
+                        
                           </Button>
                         </TooltipTrigger>
                         <TooltipContent>

@@ -14,7 +14,7 @@ const CombinedReveal = ({ children, width = "fit-content" }) => {
   }, [isInView]);
 
   return (
-    <div ref={ref} style={{ position: "relative", width, overflow: "hidden" }}>
+    <div ref={ref} style={{ position: "relative", width, overflow: "hidden", userSelect: "none" }} className="select-none">
       <motion.div
         variants={{
           hidden: { opacity: 0, x: 75, y: 75 },
@@ -23,6 +23,10 @@ const CombinedReveal = ({ children, width = "fit-content" }) => {
         initial="hidden"
         animate={mainControls}
         transition={{ duration: 0.4, delay: 0.25 }}
+        style={{ userSelect: "none" }}
+        className="select-none"
+        drag={false}
+        onDragStart={(e) => e.preventDefault()}
       >
         {children}
       </motion.div>

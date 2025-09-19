@@ -51,8 +51,8 @@ function Home() {
           </a>
         </button>
       </div>
-      <div className="absolute -right-5 top-[10%] w-[100%] md:w-[55vw] justify-between flex flex-row border-l-[0.09rem] border-[#1e1e1e] pb-20">
-        <div>
+      <div className="absolute -right-5 top-[10%] w-[100%] md:w-[55vw] justify-between flex flex-row border-l-[0.09rem] border-[#1e1e1e] pb-20 overflow-hidden" style={{ userSelect: "none" }}>
+        <div className="select-none" style={{ userSelect: "none" }}>
           <CombinedReveal>
             <InfiniteCarousel />
           </CombinedReveal>
